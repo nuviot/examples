@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\crossplatform\src\LagoVista.Client.Core\LagoVista.Client.Core.csproj" />
+    <PackageReference Include="LagoVista.IoT.Billing.Models" Version="3.0.2842.1349" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\cl.Client\src\LagoVista.Client.Core\LagoVista.Client.Core.csproj" />
   </ItemGroup>
 
 </Project>

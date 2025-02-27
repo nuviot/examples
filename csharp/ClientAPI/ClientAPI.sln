@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientAPI", "ClientAPI\ClientAPI.csproj", "{C220AFF0-A058-462C-8CA4-B9BFCB512C00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LagoVista.Client.Core", "..\..\..\..\crossplatform\src\LagoVista.Client.Core\LagoVista.Client.Core.csproj", "{CFB500B2-02C1-4926-8887-E723D68D4631}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LagoVista.Client.Core", "..\..\..\cl.Client\src\LagoVista.Client.Core\LagoVista.Client.Core.csproj", "{55D2380C-A139-4731-8835-C43B938FD127}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{C220AFF0-A058-462C-8CA4-B9BFCB512C00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C220AFF0-A058-462C-8CA4-B9BFCB512C00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C220AFF0-A058-462C-8CA4-B9BFCB512C00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFB500B2-02C1-4926-8887-E723D68D4631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFB500B2-02C1-4926-8887-E723D68D4631}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFB500B2-02C1-4926-8887-E723D68D4631}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFB500B2-02C1-4926-8887-E723D68D4631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D2380C-A139-4731-8835-C43B938FD127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D2380C-A139-4731-8835-C43B938FD127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D2380C-A139-4731-8835-C43B938FD127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D2380C-A139-4731-8835-C43B938FD127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,11 +5,11 @@ using LagoVista.Client.Core.Net;
 using LagoVista.Core.Authentication.Models;
 using LagoVista.Core.Interfaces;
 using LagoVista.Core.IOC;
-using LagoVista.Core.Networking.Services;
+using LagoVista.Core.Models.UIMetaData;
+using LagoVista.Core.Models;
 using LagoVista.Core.PlatformSupport;
 using LagoVista.IoT.Logging.Loggers;
 using LagoVista.UserAdmin.Interfaces;
-using RingCentral;
 
 var appConfig = new AppConfig();
 
@@ -35,6 +35,8 @@ var dev = new ServerInfo()
 SLWIOC.Register<INetworkService>(new DefaultNetworkService());
 SLWIOC.RegisterSingleton<ILogger>(new AdminLogger(new DebugWriter()));
 SLWIOC.RegisterSingleton<IAppConfig>(appConfig);
+SLWIOC.Register<ICustomerExamples, CustomerExamples>();
+SLWIOC.Register<IMediaExamples, MediaExamples>();
 
 LagoVista.Client.Core.Startup.Init(live, true);
 
@@ -42,15 +44,17 @@ var authClient = SLWIOC.Get<IAuthClient>();
 var authManager = SLWIOC.Get<IAuthManager>();
 var restClient = SLWIOC.Get<IRestClient>();
 
-if (!authManager.IsAuthenticated)
+//await authManager.LoadAsync();
+await authManager.LogoutAsync();
+if (!authManager.IsAuthenticated || true)
 {
     var emailAddress = Environment.GetEnvironmentVariable("NUVIOT_LOGIN_EMAIL");
     var password = Environment.GetEnvironmentVariable("NUVIOT_LOGIN_PASSWORD");
 
-    if (String.IsNullOrEmpty(emailAddress))
+    if (String.IsNullOrEmpty(emailAddress) && args.Length >= 2)
         emailAddress = args[0];
 
-    if (String.IsNullOrEmpty(password))
+    if (String.IsNullOrEmpty(password) && args.Length >= 2)
         password = args[1];
 
     if (String.IsNullOrEmpty(emailAddress) || String.IsNullOrEmpty(password))
@@ -72,19 +76,35 @@ if (!authManager.IsAuthenticated)
         GrantType = "password"
     };
 
-    var result = await authClient.LoginAsync(loginInfo);
-    if (result.Successful)
+    var authResult = await authClient.LoginAsync(loginInfo);
+    if (authResult.Successful)
     {
-        Console.WriteLine($"Success, Logged in as {result.Result.User.Text}");
+        authManager.AccessToken = authResult.Result.AccessToken;
+        authManager.AccessTokenExpirationUTC = authResult.Result.AccessTokenExpiresUTC;
+        authManager.RefreshToken = authResult.Result.RefreshToken;
+        authManager.AppInstanceId = authResult.Result.AppInstanceId;
+        authManager.RefreshTokenExpirationUTC = authResult.Result.RefreshTokenExpiresUTC;
+        authManager.IsAuthenticated = true;
+
+        var getUserResult = await restClient.GetAsync("/api/user", new CancellationTokenSource());
+        if (getUserResult.Success)
+        {
+            authManager.User = getUserResult.DeserializeContent<DetailResponse<UserInfo>>().Model;
+            await authManager.PersistAsync();
+        }
+        Console.WriteLine($"Success, Logged in as {authResult.Result.User.Text} in the {authResult.Result.Org.Text} organization");
     }
     else
     {
-        Console.WriteLine($"Could not login: {result.ErrorMessage}");
+        Console.WriteLine($"Could not login: {authResult.ErrorMessage}");
+        return;
 
     }
 }
 
-//restClient.GetListResponseAsync<CustomerSu>
+var customerExample = SLWIOC.Create<ICustomerExamples>();
+await customerExample.GetCustomersAsync();
 
-// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+var mediaExample = SLWIOC.Create<IMediaExamples>();
+await mediaExample.GetMediaLibrariesAsync();
+
