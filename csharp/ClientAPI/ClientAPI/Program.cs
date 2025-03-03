@@ -31,12 +31,13 @@ var dev = new ServerInfo()
     Port = 443
 };
 
-
 SLWIOC.Register<INetworkService>(new DefaultNetworkService());
 SLWIOC.RegisterSingleton<ILogger>(new AdminLogger(new DebugWriter()));
 SLWIOC.RegisterSingleton<IAppConfig>(appConfig);
 SLWIOC.Register<ICustomerExamples, CustomerExamples>();
 SLWIOC.Register<IMediaExamples, MediaExamples>();
+SLWIOC.Register<IDeviceExamples, DeviceExamples>();
+SLWIOC.Register<IDataExamples, DataExamples>();
 
 LagoVista.Client.Core.Startup.Init(live, true);
 

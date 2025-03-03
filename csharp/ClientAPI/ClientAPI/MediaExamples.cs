@@ -12,6 +12,8 @@ namespace ClientAPI
     public interface IMediaExamples
     {
         Task<ListResponse<MediaLibrarySummary>> GetMediaLibrariesAsync();
+        Task<ListResponse<MediaResourceSummary>> GetMediaResources(string libraryId);
+        Task<ListResponse<MediaLibrarySummary>> GetMediaForLibraryAsync(string libraryId);
     }
 
     public class MediaExamples : IMediaExamples

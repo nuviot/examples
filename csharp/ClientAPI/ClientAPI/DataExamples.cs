@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LagoVista.Client.Core;
+using LagoVista.Core.Models.UIMetaData;
 
 namespace ClientAPI
 {
     interface IDataExamples
     {
-
+        Task<ListResponse<string[]>> GetDeviceArchiveHistoryAsync(string deviceRepoId, string deviceId);
     }
 
-    internal class DataExamples : IDataExamples
+    public class DataExamples : IDataExamples
     {
+        private IRestClient _restClient;
+
+        public DataExamples(IRestClient restClient)
+        {
+            _restClient = restClient ?? throw new ArgumentNullException(nameof(restClient));
+        }
+
+        public Task<ListResponse<string[]>> GetDeviceArchiveHistoryAsync(string deviceRepoId, string deviceId)
+        {
+            return _restClient.GetListResponseAsync<string[]>($"/api/device/${deviceRepoId}/archives/{deviceId}");
+        }
     }
 }
